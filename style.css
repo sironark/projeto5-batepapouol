@@ -54,6 +54,7 @@ li{
     background-color: #FFFFFF;
 
     display: flex;
+    flex-wrap: wrap;
     justify-content: left;
     align-items: center;
 
@@ -62,6 +63,8 @@ li{
 
     margin-bottom: 4px;
     border-radius: 2px;
+
+
 }
 
 

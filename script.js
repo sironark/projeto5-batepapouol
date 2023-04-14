@@ -1,21 +1,33 @@
 axios.defaults.headers.common['Authorization'] = 'EBB4hFGiluI81dIglbTqGnch';
+seuNome = prompt('Qual seu nome?')
+entrarNaSala();
 
-const arrayMensagem = [
-    
-]
+const arrayMensagem = []
+
+setInterval(renderizarJaEnviadas, 5000)
+
+ 
 
 function renderizarJaEnviadas(){
-
+console.log('atualizado')
     const ulMensagens = document.querySelector('.batePapo')
+    let mensagens = axios.get('https://mock-api.driven.com.br/api/vm/uol/messages')
+    mensagens.then(mensagensEnviadas);
     
 
-    for(let i = 0; i<arrayMensagem.length; i++){
-        let mensagem = arrayMensagem[i];
-        console.log(mensagem);
+    function mensagensEnviadas(resposta){
+        let todasAsMensagens = resposta.data
+
+    for(let i = 0; i<todasAsMensagens.length; i++){
+        const mensagem = todasAsMensagens[i];
         ulMensagens.innerHTML += 
-        `<li> ${mensagem.nome} ${mensagem.indicacao} ${mensagem.destinatario} ${mensagem.texto}</li>`
+        `<li> ${mensagem.time} ${mensagem.from} ${mensagem.to} ${mensagem.text} </li>`
         
     }
+    
+}
+
+    
 }
 
 
@@ -31,12 +43,53 @@ function enviarMensagem(){
         texto: buscarInput.value
     }
 
-    arrayMensagem.push(novoArrayMensagem)
-    console.log(axios)
-
-    console.log(arrayMensagem)
-
+    //axios.post('https://mock-api.driven.com.br/api/vm/uol/participants',novoArrayMensagem)
     renderizarJaEnviadas();
 
 }
 
+
+
+
+function entrarNaSala(){
+    
+    const nomeUsuário = {
+        name: `${seuNome}`
+    }
+
+   const promisse = axios.post('https://mock-api.driven.com.br/api/vm/uol/participants', nomeUsuário )
+    promisse.then (entrouNaSala )
+      
+}
+
+
+function entrouNaSala(resposta){
+    const novoUsuario = resposta.data;
+    const ulMensagens = document.querySelector('ul')
+    ulMensagens.innerHTML += `<li> ${novoUsuario.name}</li>`
+        renderizarJaEnviadas()
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+function erroNome(){
+    console.log(erroNoNome)
+}
+
+
+/* setInterval(manterNaSala, 5000);
+
+
+    function manterNaSala(){
+axios.post('https://mock-api.driven.com.br/api/vm/uol/status', nomeUsuário)
+    }
+    */
