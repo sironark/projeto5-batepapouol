@@ -10,7 +10,7 @@ body{
     display: flex;
     flex-direction: column;
 
-    height: 667px;
+    
     width: 375px;
     background-color: #E5E5E5;
 
@@ -47,6 +47,7 @@ body{
 .batePapo{
     padding-top: 96px;
     box-sizing: border-box;
+    margin-bottom: 80px;
 }
 li{
     width: 100%;

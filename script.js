@@ -1,25 +1,33 @@
 axios.defaults.headers.common['Authorization'] = 'EBB4hFGiluI81dIglbTqGnch';
-seuNome = prompt('Qual seu nome?')
-entrarNaSala();
-
+perguntaNome()
 const arrayMensagem = []
 
-setInterval(renderizarJaEnviadas, 5000)
 
- 
+
+
+
+
+
+
+function perguntaNome(){
+    seuNome = prompt('Qual seu nome?')
+    entrarNaSala();
+}
+
 
 function renderizarJaEnviadas(){
 console.log('atualizado')
-    const ulMensagens = document.querySelector('.batePapo')
+    let ulMensagens = document.querySelector('.batePapo')
+    console.log(ulMensagens)
     let mensagens = axios.get('https://mock-api.driven.com.br/api/vm/uol/messages')
     mensagens.then(mensagensEnviadas);
     
 
     function mensagensEnviadas(resposta){
         let todasAsMensagens = resposta.data
-
+console.log(todasAsMensagens)
     for(let i = 0; i<todasAsMensagens.length; i++){
-        const mensagem = todasAsMensagens[i];
+        let mensagem = todasAsMensagens[i];
         ulMensagens.innerHTML += 
         `<li> ${mensagem.time} ${mensagem.from} ${mensagem.to} ${mensagem.text} </li>`
         
@@ -33,18 +41,19 @@ console.log('atualizado')
 
 
 function enviarMensagem(){
-    buscarInput = document.querySelector('input')
-    console.log(buscarInput)
-
-    const novoArrayMensagem = {
-        nome: 'João', 
-        indicacao:'para', 
-        destinatario: 'Todos:',
-        texto: buscarInput.value
+    const inputMensagem = document.querySelector('input')
+    
+    console.log(inputMensagem.value)
+    
+    const novaMensagem = {
+        from: seuNome,
+        to: "Todos",
+        text: inputMensagem.value,
+        type: "message" 
     }
-
-    //axios.post('https://mock-api.driven.com.br/api/vm/uol/participants',novoArrayMensagem)
-    renderizarJaEnviadas();
+    
+    const promisse = axios.post('https://mock-api.driven.com.br/api/vm/uol/messages',novaMensagem)
+    promisse.then(renderizarJaEnviadas)
 
 }
 
@@ -59,6 +68,8 @@ function entrarNaSala(){
 
    const promisse = axios.post('https://mock-api.driven.com.br/api/vm/uol/participants', nomeUsuário )
     promisse.then (entrouNaSala )
+    promisse.catch(perguntaNome)
+
       
 }
 
@@ -68,22 +79,25 @@ function entrouNaSala(resposta){
     const ulMensagens = document.querySelector('ul')
     ulMensagens.innerHTML += `<li> ${novoUsuario.name}</li>`
         renderizarJaEnviadas()
+
+        setInterval(manterNaSala,5000);
     }
     
 
+    function manterNaSala(){
+    
+        const atualizarNome = {
+            name: `${seuNome}`
+        }
+    
+       axios.post('https://mock-api.driven.com.br/api/vm/uol/status', atualizarNome )
+    
+        console.log('online')
+          
+    }
 
 
 
-
-
-
-
-
-
-
-function erroNome(){
-    console.log(erroNoNome)
-}
 
 
 /* setInterval(manterNaSala, 5000);
