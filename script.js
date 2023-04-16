@@ -36,11 +36,7 @@ console.log('atualizado')
     
 }
 
-scrollBottom()
-function scrollBottom(){
-    var objDiv = document.getElementById("scroll");
-    objDiv.scrollTop = objDiv.scrollHeight;
-}
+
 
 function enviarMensagem(){
     const inputMensagem = document.querySelector('input')
