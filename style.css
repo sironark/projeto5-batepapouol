@@ -9,7 +9,7 @@ body{
 .container{
     display: flex;
     flex-direction: column;
-
+    overflow-y: scroll;
     
     width: 375px;
     background-color: #E5E5E5;
@@ -45,9 +45,13 @@ body{
     width: 42.19px;
 }
 .batePapo{
+    height: 500px;
     padding-top: 96px;
-    box-sizing: border-box;
+    box-sizing: border-box; 
     margin-bottom: 80px;
+
+    overflow: scroll;
+    
 }
 li{
     width: 100%;

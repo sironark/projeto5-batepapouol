@@ -18,14 +18,13 @@ function perguntaNome(){
 function renderizarJaEnviadas(){
 console.log('atualizado')
     let ulMensagens = document.querySelector('.batePapo')
-    console.log(ulMensagens)
+    ulMensagens.innerHTML = ""
     let mensagens = axios.get('https://mock-api.driven.com.br/api/vm/uol/messages')
     mensagens.then(mensagensEnviadas);
     
 
     function mensagensEnviadas(resposta){
         let todasAsMensagens = resposta.data
-console.log(todasAsMensagens)
     for(let i = 0; i<todasAsMensagens.length; i++){
         let mensagem = todasAsMensagens[i];
         ulMensagens.innerHTML += 
@@ -34,11 +33,14 @@ console.log(todasAsMensagens)
     }
     
 }
-
     
 }
 
-
+scrollBottom()
+function scrollBottom(){
+    var objDiv = document.getElementById("scroll");
+    objDiv.scrollTop = objDiv.scrollHeight;
+}
 
 function enviarMensagem(){
     const inputMensagem = document.querySelector('input')
@@ -53,17 +55,21 @@ function enviarMensagem(){
     }
     
     const promisse = axios.post('https://mock-api.driven.com.br/api/vm/uol/messages',novaMensagem)
-    promisse.then(renderizarJaEnviadas)
-
+    
+    promisse.catch(tratarErroMensagem)
+    
 }
 
-
+function tratarErroMensagem(erro){
+console.log(erro.response.status)
+window.location.reload()
+}
 
 
 function entrarNaSala(){
     
     const nomeUsuário = {
-        name: `${seuNome}`
+        name: seuNome
     }
 
    const promisse = axios.post('https://mock-api.driven.com.br/api/vm/uol/participants', nomeUsuário )
@@ -78,9 +84,9 @@ function entrouNaSala(resposta){
     const novoUsuario = resposta.data;
     const ulMensagens = document.querySelector('ul')
     ulMensagens.innerHTML += `<li> ${novoUsuario.name}</li>`
-        renderizarJaEnviadas()
-
-        setInterval(manterNaSala,5000);
+     setInterval(renderizarJaEnviadas,3000)
+     
+      setInterval(manterNaSala,5000);
     }
     
 
@@ -100,10 +106,4 @@ function entrouNaSala(resposta){
 
 
 
-/* setInterval(manterNaSala, 5000);
-
-
-    function manterNaSala(){
-axios.post('https://mock-api.driven.com.br/api/vm/uol/status', nomeUsuário)
-    }
-    */
+    
